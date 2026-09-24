@@ -1,0 +1,19 @@
+# Secrets - NEVER commit these
+.env
+*.pem
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+
+# Editors
+.vscode/
+.idea/
+.DS_Store
+
+# Eval output
+eval/results/*
+!eval/results/.gitkeep

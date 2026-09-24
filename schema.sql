@@ -1,0 +1,31 @@
+-- Paste into the Supabase SQL editor.
+--
+-- Three tables. Write the DDL yourself; here is what each one holds and the
+-- constraints that matter.
+--
+-- avatars
+--   id uuid pk, user_id uuid, status text, storage_prefix text,
+--   created_at timestamptz
+--   index on (user_id)
+--
+-- garments
+--   id uuid pk, user_id uuid, status text, storage_prefix text,
+--   category text, subcategory text, attributes jsonb,
+--   attributes_source text, created_at timestamptz
+--   index on (user_id, category, created_at desc)
+--
+-- tryon_jobs                              -- this table IS the job queue
+--   id uuid pk, user_id uuid, avatar_id uuid, garment_ids jsonb,
+--   category text, status text, attempts int, provider text,
+--   model_version text, steps int, seed int, modal_call_id text,
+--   result_path text, error_code text, error_detail text, duration_ms int,
+--   idempotency_key text, created_at, started_at, completed_at
+--   unique (user_id, idempotency_key)     -- stops duplicate jobs on retry
+--   index on (status, created_at)         -- the claim query rides this
+--   index on (user_id, created_at desc)   -- history
+--
+-- Row level security: this service uses the service_role key, which bypasses
+-- RLS, and enforces ownership in every query instead. That holds only while
+-- the browser talks exclusively to your API. If the browser ever talks to
+-- Supabase directly, add RLS policies on all three tables and the bucket
+-- first.

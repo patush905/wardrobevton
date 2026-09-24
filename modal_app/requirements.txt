@@ -1,0 +1,14 @@
+# Installed into the MODAL IMAGE only - never into your web service.
+# Pin these once Leffa runs; version drift between torch, diffusers and
+# detectron2 is the single most common way this breaks.
+
+torch
+torchvision
+diffusers
+transformers
+accelerate
+huggingface_hub
+opencv-python-headless
+pillow
+numpy
+# detectron2 - install from git in the Modal image, not from PyPI

@@ -1,0 +1,10 @@
+<!--
+  The polling partial. Roughly:
+
+    <div hx-get="/partials/job/{{ job.id }}"
+         hx-trigger="every 3s"
+         hx-swap="outerHTML">
+
+  Drop the hx-trigger once status is COMPLETED or FAILED, or it polls forever.
+  Show the elapsed time - a 30 second wait with no feedback feels broken.
+-->
