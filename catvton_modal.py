@@ -7,10 +7,10 @@ image = (
     modal.Image.debian_slim(python_version="3.10")
     .apt_install("git", "libgl1", "libglib2.0-0")
     .run_commands(
-        "git clone https://github.com/Zheng-Chong/CatVTON /repo",
-        "sed -i '/diffusers/d' /repo/requirements.txt",
-        "pip install -r /repo/requirements.txt 'diffusers==0.35.1'",
-    )
+            "git clone https://github.com/Zheng-Chong/CatVTON /repo",
+            "sed -i '/diffusers/d; /accelerate/d' /repo/requirements.txt",
+            "pip install -r /repo/requirements.txt 'diffusers==0.35.1' 'accelerate==1.2.1'",
+        )
     .env({"HF_HOME": "/weights/hf"})  # HF cache lives in the volume
 )
 

@@ -8,13 +8,15 @@ These are the masks CatVTON repaints: the upper mask for a top, the lower
 mask for pants/skirts, the full clothes mask for a dress or outfit.
 
 Run: python -m server.mapping.garment_mask <image_path> [--out out_dir]
-Writes <stem>_upper_mask.png, <stem>_lower_mask.png and <stem>_split.png
-(the photo with each region tinted and the hip line drawn).
+Writes <stem>_upper_mask.png, <stem>_lower_mask.png, <stem>_split.png
+(the photo with each region tinted and the hip line drawn) and <stem>_pose.json
+(the landmarks; Leffa's --pose uses them in place of OpenPose).
 """
 
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
@@ -160,7 +162,7 @@ def garment_masks(image_path: Path, pose_model: Path = POSE_MODEL):
 
 
 def write_outputs(image_path: Path, out_dir: Path) -> list[Path]:
-    """Write the upper/lower masks and the debug overlay. Returns the paths."""
+    """Write the upper/lower masks, the debug overlay and the pose. Returns the paths."""
     image, upper, lower, _, landmarks = garment_masks(image_path)
 
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -173,7 +175,9 @@ def write_outputs(image_path: Path, out_dir: Path) -> list[Path]:
     }
     for path, img in outputs.items():
         cv2.imwrite(str(path), img)
-    return list(outputs)
+    pose_path = out_dir / f"{stem}_pose.json"
+    pose_path.write_text(json.dumps({"landmarks": landmarks}))
+    return [*outputs, pose_path]
 
 
 def main(argv: list[str] | None = None) -> int:
