@@ -17,3 +17,4 @@ __pycache__/
 # Eval output
 eval/results/*
 !eval/results/.gitkeep
+.agents/
